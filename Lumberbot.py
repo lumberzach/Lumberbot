@@ -3,12 +3,14 @@ from discord.ext import commands
 from discord.utils import get
 import youtube_dl
 import os
+import discord
+from dotenv import load_dotenv
 
-token = "Mjg2NTYxNzc3NTMyMjcyNjQx.XwDQBQ.SExGhJRnGaop6Aywaq_gOgB3Ujs"
-guild = "AZ Friends"
+load_dotenv()
 
-# token = "NzI4ODcyNDAxODQ4MzY5MTk1.XwAuLw.PgS18WCkXHBhjEoTMMGNUs75RJQ"
-# guild = "Nexed"
+token = os.getenv('disc_token')
+guild = os.getenv('disc_guild')
+
 
 bot = commands.Bot(command_prefix=['/'])
 
@@ -126,7 +128,7 @@ async def play(ctx, url: str):
 # Play snarb.mp3 clip
 @bot.command(pass_context=True, aliases=['delusional', 'thedefeated'])
 async def snarb(ctx):
-    path = r"C:\Users\Boxca\Desktop\PycharmProjects\daddlumber\snarb\snarb.mp3"
+    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\snarb\snarb.mp3"
     voice = get(bot.voice_clients)
     voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
     voice.source = discord.PCMVolumeTransformer(voice.source)
@@ -136,7 +138,7 @@ async def snarb(ctx):
 # Play sappie.mp3 clip
 @bot.command(pass_context=True, aliases=['sap'])
 async def sappie(ctx):
-    path = r"C:\Users\Boxca\Desktop\PycharmProjects\daddlumber\sappie\sappie.mp3"
+    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\sappie\sappie.mp3"
     voice = get(bot.voice_clients)
     voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
     voice.source = discord.PCMVolumeTransformer(voice.source)
