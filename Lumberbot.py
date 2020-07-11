@@ -1,38 +1,33 @@
+import discord
 from discord.ext import commands
 from discord.utils import get
 import youtube_dl
 import os
-import discord
 from dotenv import load_dotenv
 import random
-
 
 load_dotenv()
 
 token = os.getenv('disc_token')
 guild = os.getenv('disc_guild')
 
-
 bot = commands.Bot(command_prefix=['/'])
 
 
-@bot.event
-async def on_ready():
-    print('bot online.')
+# cogs
+@bot.command()
+async def load(ctx, extension):
+    bot.load_extension(f'cogs.{extension}')
 
 
-# Plays a random sound clip from shortclip folder.
-@bot.command(pass_context=True)
-async def clip(ctx):
-    basedir = r"C:/Users/Boxca/PycharmProjects/Lumberbot/shortclips/"
-    randomfile = random.choice(os.listdir(basedir))
-    path = basedir + randomfile
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
+@bot.command()
+async def unload(ctx, extension):
+    bot.unload_extension(f'cogs.{extension}')
 
 
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        bot.load_extension(f'cogs.{filename[:-3]}')
 
 
 # Delete text channel messages, 5 is default if no amount is given.
@@ -93,6 +88,7 @@ async def resume(ctx):
     voice = get(bot.voice_clients)
     voice.resume()
 
+
 # Removes existing mp3 and downloads new mp3 from youutube, renames to song.mp3, streams song to voice
 @bot.command(pass_context=True, aliases=['p'])
 async def play(ctx, url: str):
@@ -110,6 +106,7 @@ async def play(ctx, url: str):
 
     voice = get(bot.voice_clients)
 
+    # options for audio quality ect.
     ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{
@@ -138,96 +135,6 @@ async def play(ctx, url: str):
     print("playing\n")
 
     #add volume control loop here or where?
-
-
-# Play snarb.mp3 clip
-@bot.command(pass_context=True, aliases=['delusional', 'thedefeated'])
-async def snarb(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\snarb\snarb.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
-
-
-# Play snarb2.mp3 clip
-@bot.command(pass_context=True, aliases=['fellas'])
-async def mclovin(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\snarb\snarb2.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
-
-
-# Play sappie.mp3 clip
-@bot.command(pass_context=True, aliases=['sap'])
-async def sappie(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\sappie\sappie.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
-
-
-# Play sappie.mp3 clip
-@bot.command(pass_context=True)
-async def hype2(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\sappie\hype.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
-
-
-# Play eug.mp3 clip
-@bot.command(pass_context=True, aliases=['gay'])
-async def eug(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\eug\eug.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 3.0
-
-
-# Play circuits.mp3 clip
-@bot.command(pass_context=True, aliases=['hype'])
-async def circuits(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\circuits\circuits.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
-
-
-# Play circuits2.mp3 clip
-@bot.command(pass_context=True, aliases=['lol'])
-async def thejoker(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\circuits\circuits2.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
-
-
-# Play rage.mp3 clip
-@bot.command(pass_context=True, aliases=['gadola'])
-async def rage(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\gadola\rage.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
-
-
-# Play niceshot.mp3 clip
-@bot.command(pass_context=True, aliases=['ns'])
-async def niceshot(ctx):
-    path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\gadola\niceshot.mp3"
-    voice = get(bot.voice_clients)
-    voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 1
 
 
 bot.run(token)
