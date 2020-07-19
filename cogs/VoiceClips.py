@@ -74,6 +74,14 @@ class VoiceClips(commands.Cog):
         voice.source = discord.PCMVolumeTransformer(voice.source)
         voice.source.volume = 1
 
+    @commands.command(pass_context=True, aliases=['fuckucolby'])
+    async def fuckcolby(self, ctx):
+        path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\shortclips\fuckcolby.mp3"
+        voice = get(self.bot.voice_clients)
+        voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
+        voice.source = discord.PCMVolumeTransformer(voice.source)
+        voice.source.volume = 1
+
     # Play nuts.mp3 clip
     @commands.command(pass_context=True, aliases=['nutsack'])
     async def nuts(self, ctx):
@@ -179,6 +187,15 @@ class VoiceClips(commands.Cog):
     @commands.command(pass_context=True, aliases=['ns'])
     async def niceshot(self, ctx):
         path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\gadola\niceshot.mp3"
+        voice = get(self.bot.voice_clients)
+        voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
+        voice.source = discord.PCMVolumeTransformer(voice.source)
+        voice.source.volume = 1
+
+    # Play omg.mp3 clip
+    @commands.command(pass_context=True)
+    async def omg(self, ctx):
+        path = r"C:\Users\Boxca\PycharmProjects\Lumberbot\shortclips\omg.mp3"
         voice = get(self.bot.voice_clients)
         voice.play(discord.FFmpegPCMAudio(path), after=lambda e: print("Song done!"))
         voice.source = discord.PCMVolumeTransformer(voice.source)
