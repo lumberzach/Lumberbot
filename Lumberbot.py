@@ -30,13 +30,6 @@ for filename in os.listdir('./cogs'):
         bot.load_extension(f'cogs.{filename[:-3]}')
 
 
-# Delete text channel messages, 5 is default if no amount is given.
-@bot.command(pass_context=True)
-@commands.has_role("VIRGINS")
-async def clear(ctx, amount=5):
-    await ctx.channel.purge(limit=amount)
-
-
 # Joins the Voice Channel the commanding user is in.
 @bot.command(pass_context=True)
 @commands.has_role("VIRGINS")
@@ -73,6 +66,7 @@ async def leave(ctx):
 async def stop(ctx):
     voice = get(bot.voice_clients)
     voice.stop()
+
 
 
 # Pauses current mp3, user can resume to continue.
