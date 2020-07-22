@@ -16,17 +16,19 @@ import time
 
 
 class YoutubeStreaming(commands.Cog):
-
     def __init__(self, bot):
         self.bot = bot
 
-    # Delete text channel messages, 5 is default if no amount is given.
+    # Streams
     @commands.command(pass_context=True)
     @commands.has_role("VIRGINS")
     async def yt(self, ctx):
 
+        def check(author):
+            def inner_check(message):
+                return message.author == author
 
-
+            return inner_check
 
         # Open Chrome
         options = Options()
@@ -40,19 +42,21 @@ class YoutubeStreaming(commands.Cog):
         # Stream the youtube video or just play audio in discord channel.
 
         await ctx.send("Press 1 for a Video Stream, 2 for only audio")
-        msg = await self.bot.wait_for('message')
+        msg = await self.bot.wait_for('message', check=check(ctx.author), timeout=120)
         choice = int(msg.content)
+
         if choice < 2:
-            # Start stream from Discord
+
+            # Start stream from Discord, currently discord has to be the focus window
             pyautogui.click(pyautogui.locateCenterOnScreen('startstream.png'))
-            time.sleep(2.2)
+            time.sleep(5.2)
             pyautogui.click(pyautogui.locateCenterOnScreen('screen.png'))
-            time.sleep(2.3)
+            time.sleep(4.3)
             pyautogui.click(pyautogui.locateCenterOnScreen('golive.png'))
 
             # Search YouTube from user's input from discord
             await ctx.send("What are we searching for?")
-            msg = await self.bot.wait_for('message')
+            msg = await self.bot.wait_for('message', check=check(ctx.author), timeout=120)
             search_query = msg.content
             driver.get("https://www.youtube.com/results?search_query=" + search_query)
 
@@ -64,15 +68,23 @@ class YoutubeStreaming(commands.Cog):
 
             # Take user's choice and start video + return url
             await ctx.send("Please enter choice from 1-3")
-            msg = await self.bot.wait_for("message")
+            msg = await self.bot.wait_for('message', check=check(ctx.author), timeout=120)
             choice = int(msg.content)
             if choice <= 3:
                 driver.find_elements_by_id('video-title')[choice - 1].click()
+                time.sleep(3)
+                driver.find_element_by_tag_name('body').send_keys('f')
 
         else:
+
+            # Closes Driver and goes headless mode
+            driver.quit()
+            options.headless = True
+            driver = webdriver.Chrome(r"C:\Users\Boxca\Downloads\Drivers\chromedriver_win32 (1)\chromedriver.exe",
+                                      options=options)
             # Search YouTube from user's input from discord
-            await ctx.send("What are we searching for?")
-            msg = await self.bot.wait_for('message')
+            await ctx.send("Stream up, what are we searching for?")
+            msg = await self.bot.wait_for('message', check=check(ctx.author), timeout=120)
             search_query = msg.content
             driver.get("https://www.youtube.com/results?search_query=" + search_query)
 
@@ -84,7 +96,7 @@ class YoutubeStreaming(commands.Cog):
 
             # Take user's choice and start video + return url
             await ctx.send("Please enter choice from 1-3")
-            msg = await self.bot.wait_for("message")
+            await self.bot.wait_for('message', check=check(ctx.author), timeout=120)
             choice = int(msg.content)
             if choice <= 3:
 
