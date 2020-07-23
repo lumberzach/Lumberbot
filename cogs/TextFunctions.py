@@ -12,7 +12,8 @@ class TextFunctions(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def roll(self, ctx):
+    async def roll(self, ctx, user):
+        "Rolls a random number between 1-100"
         roll = randint(1, 100)
         await ctx.send(roll)
 
@@ -20,6 +21,7 @@ class TextFunctions(commands.Cog):
     @commands.command(pass_context=True)
     @commands.has_role("VIRGINS")
     async def clear(self, ctx, amount=5):
+        "Clears a specified amount of messages. Default = 5"
         await ctx.channel.purge(limit=amount + 1)
 
 

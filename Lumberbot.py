@@ -34,6 +34,7 @@ for filename in os.listdir('./cogs'):
 @bot.command(pass_context=True)
 @commands.has_role("VIRGINS")
 async def join(ctx):
+    "Joins voice channel"
     channel = ctx.message.author.voice.channel
     voice = get(bot.voice_clients)
 
@@ -49,6 +50,7 @@ async def join(ctx):
 @bot.command(pass_context=True, aliases=['l'])
 @commands.has_role("VIRGINS")
 async def leave(ctx):
+    "Leaves the voice channel"
     channel = ctx.message.author.voice.channel
     voice = get(bot.voice_clients)
 
@@ -64,6 +66,7 @@ async def leave(ctx):
 # Stops playing current mp3. Not possible to resume from a pause.
 @bot.command(pass_context=True)
 async def stop(ctx):
+    "Stops current play function and will allow a new /play"
     voice = get(bot.voice_clients)
     voice.stop()
 
@@ -72,6 +75,7 @@ async def stop(ctx):
 # Pauses current mp3, user can resume to continue.
 @bot.command(pass_context=True)
 async def pause(ctx):
+    "Pauses current song, can be resumed with /resume"
     voice = get(bot.voice_clients)
     voice.pause()
 
@@ -79,6 +83,7 @@ async def pause(ctx):
 # Resumes current mp3.
 @bot.command(pass_context=True)
 async def resume(ctx):
+    "Resumes current song"
     voice = get(bot.voice_clients)
     voice.resume()
 
@@ -86,6 +91,7 @@ async def resume(ctx):
 # Removes existing mp3 and downloads new mp3 from youutube, renames to song.mp3, streams song to voice
 @bot.command(pass_context=True, aliases=['p'])
 async def play(ctx, url: str):
+    "/play url. Plays a specific youtube video from url. Bot must be in current voice channel"
     song_there = os.path.isfile("song.mp3")
     try:
         if song_there:
@@ -129,6 +135,8 @@ async def play(ctx, url: str):
     print("playing\n")
 
     #add volume control loop here or where?
+
+
 
 
 bot.run(token)
