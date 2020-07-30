@@ -2,9 +2,17 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 from random import randint
+import pyowm
+from pyowm.owm import OWM
+import dotenv
+from dotenv import load_dotenv
 import os
 import random
+load_dotenv()
 
+
+
+owmapi = os.getenv("owm_key")
 
 class TextFunctions(commands.Cog):
 
@@ -23,6 +31,21 @@ class TextFunctions(commands.Cog):
     async def clear(self, ctx, amount=5):
         "Clears a specified amount of messages. Default = 5"
         await ctx.channel.purge(limit=amount + 1)
+
+    # Checks current weather in city/country
+    @commands.command()
+    async def weather(self, ctx, *, city: str):
+        "/weather city | I.E: /weather Phoenix"
+        load_dotenv()
+        owm = OWM(owmapi)
+        mgr = owm.weather_manager()
+        weather = mgr.weather_at_place(city + ", USA").weather
+        temp_fahrenheit = weather.temperature('fahrenheit')["temp"]
+        status = weather.detailed_status
+        if temp_fahrenheit > 100:
+            await ctx.send(f"The current temperature in {city} is {temp_fahrenheit} with {status}. Sappie should not go hiking.")
+        else:
+            await ctx.send(f"The current temperature in {city} is {temp_fahrenheit} with {status}. Get out there Sappie, this is approved hiking weather")
 
 
 def setup(bot):
