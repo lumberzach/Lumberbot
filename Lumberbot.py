@@ -11,19 +11,35 @@ load_dotenv()
 token = os.getenv('disc_token')
 guild = os.getenv('disc_guild')
 
+# Commands prefix
 bot = commands.Bot(command_prefix=['/'])
 
 
-# cogs
+
+@bot.event
+async def on_ready():
+    print('bot online.')
+    channel = bot.get_channel(713655784252375071)
+    embed = discord.Embed(title='whatever title', color=discord.Color.teal())
+    embed.add_field(name="Field 1", value="Field test 1", inline=True)
+    embed.add_field(name="Field 2", value="Field test 2", inline=False)
+    embed.set_footer(text=channel.guild.name)
+    await channel.send(embed=embed)
+
+
+
+
+
+# Loads cogs
 @bot.command()
 async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
 
 
+# Unloads cogs
 @bot.command()
 async def unload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
-
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
@@ -39,9 +55,10 @@ async def join(ctx):
     voice = get(bot.voice_clients)
 
     if voice and voice.is_connected():
+        await voice.disconnect()
         await voice.move_to(channel)
     else:
-        voice = await channel.connect()
+        await channel.connect()
 
     await ctx.send(f"Joined {channel}")
 
