@@ -14,4 +14,4 @@ Twilio (to send sms from discord channel)
 PyOWM (for video streaming from the computer the bot is run on)
 
 ## Usage
-usage description to be added later
+usage description to be added
