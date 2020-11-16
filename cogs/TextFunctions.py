@@ -8,6 +8,11 @@ import dotenv
 from dotenv import load_dotenv
 import os
 import random
+import datetime
+from discord.ext import commands, timers
+from covid19_data import JHU
+
+
 load_dotenv()
 
 
@@ -20,10 +25,15 @@ class TextFunctions(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def roll(self, ctx, user):
+    async def roll(self, ctx):
         "Rolls a random number between 1-100"
         roll = randint(1, 100)
         await ctx.send(roll)
+
+    @commands.command()
+    async def covid(self, ctx):
+        "Reports current Covid19 Case Count in AZ"
+        await ctx.send(str(JHU.Arizona.confirmed))
 
     # Delete text channel messages, 5 is default if no amount is given.
     @commands.command(pass_context=True)

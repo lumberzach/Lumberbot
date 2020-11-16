@@ -5,29 +5,42 @@ import youtube_dl
 import os
 from dotenv import load_dotenv
 import random
+from twilio import twiml
+from flask import Flask, request, redirect
+from twilio.twiml.messaging_response import MessagingResponse
 
 load_dotenv()
 
+
+# Discord creds
 token = os.getenv('disc_token')
 guild = os.getenv('disc_guild')
+
+app = Flask(__name__)
+
 
 # Commands prefix
 bot = commands.Bot(command_prefix=['/'])
 
 
-
 @bot.event
 async def on_ready():
     print('bot online.')
-    channel = bot.get_channel(713655784252375071)
-    embed = discord.Embed(title='whatever title', color=discord.Color.teal())
-    embed.add_field(name="Field 1", value="Field test 1", inline=True)
-    embed.add_field(name="Field 2", value="Field test 2", inline=False)
-    embed.set_footer(text=channel.guild.name)
-    await channel.send(embed=embed)
 
 
+@app.route("/sms", methods=['GET', 'POST'])
+async def sms_reply():
+    """Respond to incoming calls with a simple text message."""
+    # Start our TwiML response
+    resp = MessagingResponse()
 
+    # Add a message
+    resp.message("Your message has been received, thanks!")
+
+    body = request.values.get('Body', None)
+    print(body)
+
+    return str(resp)
 
 
 # Loads cogs
@@ -80,13 +93,17 @@ async def leave(ctx):
         await ctx.send("I am not in a voice channel.")
 
 
+@bot.command(pass_context=True)
+async def vote(ctx):
+    "starts a vote to move a member to crinkle town"
+
+
 # Stops playing current mp3. Not possible to resume from a pause.
 @bot.command(pass_context=True)
 async def stop(ctx):
     "Stops current play function and will allow a new /play"
     voice = get(bot.voice_clients)
     voice.stop()
-
 
 
 # Pauses current mp3, user can resume to continue.
@@ -150,10 +167,6 @@ async def play(ctx, url: str):
     nname = name.rsplit("-", 2)
     await ctx.send(f"Playing: {nname[0]}")
     print("playing\n")
-
-    #add volume control loop here or where?
-
-
 
 
 bot.run(token)
