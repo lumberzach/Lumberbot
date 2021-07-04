@@ -127,6 +127,14 @@ async def resume(ctx):
 async def play(ctx, url: str):
     "/play url. Plays a specific youtube video from url. Bot must be in current voice channel"
     song_there = os.path.isfile("song.mp3")
+    playlist_substring = 'list=P'
+
+    if playlist_substring in url:
+        await ctx.send("Playlist detected, we can't play those yet")
+        return
+    else:
+        print('no playlists detected')
+
     try:
         if song_there:
             os.remove("song.mp3")
@@ -138,7 +146,9 @@ async def play(ctx, url: str):
 
     await ctx.send("Getting everything ready now")
 
+
     voice = get(bot.voice_clients)
+
 
     # options for audio quality ect.
     ydl_opts = {
