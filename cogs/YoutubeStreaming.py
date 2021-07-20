@@ -11,7 +11,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 import youtube_dl
 import os
-import pyautogui
+# import pyautogui
 import time
 import time
 from selenium import webdriver
