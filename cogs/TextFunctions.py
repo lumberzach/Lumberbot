@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import os
 import random
 import datetime
-from discord.ext import commands, timers
+# from discord.ext import commands, timers
 # from covid19_data import JHU
 
 
