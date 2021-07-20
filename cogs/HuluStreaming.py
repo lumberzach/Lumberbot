@@ -16,7 +16,7 @@ class HuluStreaming(commands.Cog):
 
     @commands.command(pass_context=True, Alases="Hulu")
     async def hulu(self, ctx):
-        "Launches hulu to be streamed."
+        "Launches hulu to be streamed in"
         await ctx.send("Launching hulu... please wait until prompted to search")
 
         # loading webdrivers and opening the website

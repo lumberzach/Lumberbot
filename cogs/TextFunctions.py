@@ -10,7 +10,7 @@ import os
 import random
 import datetime
 from discord.ext import commands, timers
-from covid19_data import JHU
+# from covid19_data import JHU
 
 
 load_dotenv()
@@ -33,7 +33,9 @@ class TextFunctions(commands.Cog):
     @commands.command()
     async def covid(self, ctx):
         "Reports current Covid19 Case Count in AZ"
-        await ctx.send(str(JHU.Arizona.confirmed))
+        await ctx.send("The amount of confirmed Covid19 cases in AZ is currently " + str(JHU.Arizona.confirmed))
+
+
 
     # Delete text channel messages, 5 is default if no amount is given.
     @commands.command(pass_context=True)

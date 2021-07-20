@@ -13,11 +13,60 @@ import youtube_dl
 import os
 import pyautogui
 import time
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
 
 class YoutubeStreaming(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(pass_context=True, Aliases=['fooski'])
+    async def foo(self, ctx):
+
+        # Chrome Options to save passwords to each platform
+        options = Options()
+
+        # Path to chrome profile
+        options.add_argument("user-data-dir=C:\\Users\\Boxca\\AppData\\Local\\Google\\Chrome\\profiletwo")
+        # options.add_experimental_option("detach", True)
+        options.add_argument("start-maximized")
+        options.add_experimental_option("excludeSwitches", ['enable-automation']);
+        driver = webdriver.Chrome(r"C:\Users\Boxca\Downloads\Drivers\chromedriver_win32 (1)\chromedriver.exe",
+                                  options=options)
+
+
+        # Play Function
+        def play(url):
+            print(url)
+            driver.get(url)
+            time.sleep(3)
+            try:
+                driver.find_element_by_class_name('ytp-ad-skip-button-container')
+                print("We've got an ad, lets skip it")
+                time.sleep(3.5)
+                driver.find_element_by_class_name('ytp-ad-skip-button-container').click()
+            except NoSuchElementException:
+                print("No ad, keep playing")
+            actions = ActionChains(driver)
+            actions.send_keys('f')
+            actions.perform()
+
+        # Main Script
+        while True:
+            await ctx.send("What do you want to watch?\n")
+            msg = await self.bot.wait_for('message')
+            url = msg.content
+            play(url)
+            time.sleep(0)
+
+def setup(bot):
+    bot.add_cog(YoutubeStreaming(bot))
+
 
     # Streams
     # @commands.command(pass_context=True, Aliases=['youtube'])
@@ -72,7 +121,7 @@ class YoutubeStreaming(commands.Cog):
     #         msg = await self.bot.wait_for('message', check=check(ctx.author), timeout=120)
     #         choice = int(msg.content)
     #         if choice <= 3:
-    #             driver.find_elements_by_id('video-title')[choice - 1].click()
+                #driver.find_elements_by_id('video-title')[choice - 1].click()
     #             time.sleep(3)
     #             driver.find_element_by_tag_name('body').send_keys('f')
     #
@@ -156,5 +205,4 @@ class YoutubeStreaming(commands.Cog):
     #     driver.quit()
 
 
-def setup(bot):
-    bot.add_cog(YoutubeStreaming(bot))
+
