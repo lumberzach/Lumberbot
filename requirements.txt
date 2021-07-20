@@ -1,5 +1,5 @@
 git+https://github.com/Rapptz/discord.py
-heroku-opus
+git+https://github.com/xrisk/heroku-opus
 ffmpeg
 PyNaCl==1.4.0
 pyowm==3.0.0
